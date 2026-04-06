@@ -2,64 +2,53 @@ package com.example.vaultx.ViewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.vaultx.Models.PasswordItem
 import com.example.vaultx.Repository.PasswordRepository
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class PasswordViewModel(private val repo: PasswordRepository) : ViewModel() {
 
-    val passwords = repo.passwords
+    private val _query = MutableLiveData("")
+    val query: LiveData<String> = _query
 
-    private val selectPasswords = MutableLiveData<PasswordItem?>()
-    val selectpassword : LiveData<PasswordItem?> = selectPasswords
+    private val _selectedPassword = MutableLiveData<PasswordItem?>()
+    val selectedPassword: LiveData<PasswordItem?> = _selectedPassword
 
-    private val _searchResult = MutableLiveData<List<PasswordItem>>()
-    val searchResult: LiveData<List<PasswordItem>> = _searchResult
+    val passwords: LiveData<List<PasswordItem>> =
+         _query.switchMap { query ->
+            if (query.length < 2) {
+                repo.passwords
+            } else {
+                repo.searchPasswords(query)
+            }
+        }
 
-    private var searchJob: Job? = null
+    fun setQuery(q: String) {
+        _query.value = q
+    }
 
-    fun selectPasswords(item: PasswordItem?){
-        selectPasswords.value = item
+    fun selectPassword(item: PasswordItem?) {
+        _selectedPassword.value = item
     }
 
     fun insert(item: PasswordItem){
-
         viewModelScope.launch {
             repo.insert(item)
         }
     }
 
     fun update(item: PasswordItem){
-
         viewModelScope.launch {
             repo.update(item)
         }
     }
 
     fun delete(item: PasswordItem){
-
         viewModelScope.launch {
             repo.delete(item)
         }
     }
-
-    fun searchPasswords(query:String){
-
-        if(query.isEmpty() || query.length < 2){
-            searchJob?.cancel()
-            _searchResult.value = emptyList()
-            return
-        }
-
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch {
-            repo.searchPasswords(query).collect {
-                _searchResult.value = it
-            }
-        }
-    }
-
 }

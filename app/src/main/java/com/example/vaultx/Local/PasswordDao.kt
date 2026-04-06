@@ -30,7 +30,7 @@ interface PasswordDao {
     OR email LIKE '%' || :query || '%' 
     ORDER BY updatedAt DESC
     """)
-    fun searchPasswords(query: String): Flow<List<PasswordItem>>
+    fun searchPasswords(query: String):  LiveData<List<PasswordItem>>
 
 
 }

@@ -30,7 +30,7 @@ class PasswordRepository(private val dao: PasswordDao) {
         dao.delete(item)
     }
 
-    fun searchPasswords(query: String): Flow<List<PasswordItem>> {
+    fun searchPasswords(query: String):LiveData<List<PasswordItem>>{
         return dao.searchPasswords(query)
     }
 }

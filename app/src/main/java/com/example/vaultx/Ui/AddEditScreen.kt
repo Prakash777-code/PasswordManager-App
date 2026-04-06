@@ -19,6 +19,7 @@ import com.example.vaultx.ViewModel.PasswordViewModel
 import androidx.core.widget.addTextChangedListener
 import com.example.vaultx.Local.PasswordDatabse
 import com.example.vaultx.Repository.PasswordRepository
+import com.example.vaultx.Util.AppConstants.AddEditConstants
 import com.example.vaultx.ViewModel.PasswordViewModelFactory
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -30,7 +31,7 @@ class AddEditActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_add_edit)
+        setContentView(R.layout.add_edit)
 
         val dao = PasswordDatabse.getInstance(applicationContext).passwordDao()
         val repo = PasswordRepository(dao)
@@ -46,10 +47,10 @@ class AddEditActivity : AppCompatActivity() {
         val btnCopyEmail = findViewById<ImageView>(R.id.btnCopyEmail)
         val tvStrength = findViewById<TextView>(R.id.tvStrength)
         val strengthBar = findViewById<ProgressBar>(R.id.strengthBar)
-        val btnGoBack = findViewById<ImageButton>(R.id.btnBack)
+        val btnGoBack = findViewById<ImageButton>(R.id.btnGoBack)
 
 
-        val selected: PasswordItem? = intent.getParcelableExtra("password_item")
+        val selected: PasswordItem? = intent.getParcelableExtra(AddEditConstants.EXTRA_PASSWORD_ITEM)
         selected?.let {
             etTitle.setText(it.title)
             etEmail.setText(it.email)
@@ -59,14 +60,14 @@ class AddEditActivity : AppCompatActivity() {
         btnCopyPassword.setOnClickListener {
 
             val password = etPassword.text.toString().trim()
-            copyToClipboard("Password",password)
+            copyToClipboard(AddEditConstants.PASSWORD_CLIP_LABEL,password)
 
         }
 
         btnCopyEmail.setOnClickListener {
 
             var email = etEmail.text.toString()
-            copyToClipboard("Email",email)
+            copyToClipboard(AddEditConstants.EMAIL_CLIP_LABEL,email)
         }
 
         btnSavePassword.setOnClickListener {
@@ -77,7 +78,7 @@ class AddEditActivity : AppCompatActivity() {
             val passwordInput = etPassword.text.toString()
 
             if (title.isEmpty() || email.isEmpty() || passwordInput.isEmpty()) {
-                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, AddEditConstants.EMPTY_FIELD, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -91,7 +92,7 @@ class AddEditActivity : AppCompatActivity() {
                         createdAt = System.currentTimeMillis()
                     )
                 )
-                Toast.makeText(this,"Your password is safe now", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, AddEditConstants.PASSWORD_ADDED, Toast.LENGTH_SHORT).show()
 
             } else {
 
@@ -105,7 +106,7 @@ class AddEditActivity : AppCompatActivity() {
                         updatedAt = System.currentTimeMillis()
                     )
                 )
-                Toast.makeText(this,"Your password is updated and safe now", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, AddEditConstants.PASSWORD_UPDATED, Toast.LENGTH_SHORT).show()
             }
             setResult(RESULT_OK)
             finish()
@@ -124,34 +125,34 @@ class AddEditActivity : AppCompatActivity() {
             when(strength){
 
                 PasswordStrengthChecker.Strength.WEAK -> {
-                    tvStrength.text = "Weak password"
-                    tvStrength.setTextColor(android.graphics.Color.parseColor("#D32F2F"))
+                    tvStrength.text = AddEditConstants.WEAK_PASSWORD
+                    tvStrength.setTextColor(android.graphics.Color.parseColor(AddEditConstants.COLOUR_WEAK))
 
-                    strengthBar.progress = 30
+                    strengthBar.progress = AddEditConstants.WEAK_PROGRESS
                     strengthBar.progressDrawable.setColorFilter(
-                        Color.parseColor("#D32F2F"),
+                        Color.parseColor(AddEditConstants.COLOUR_WEAK),
                         android.graphics.PorterDuff.Mode.SRC_IN
                     )
                 }
 
                 PasswordStrengthChecker.Strength.MEDIUM ->{
-                    tvStrength.text = "Medium password"
-                    tvStrength.setTextColor(android.graphics.Color.parseColor("#FFA000"))
+                    tvStrength.text = AddEditConstants.MEDIUM_PASSWORD
+                    tvStrength.setTextColor(android.graphics.Color.parseColor(AddEditConstants.COLOUR_MEDIUM))
 
-                    strengthBar.progress = 65
+                    strengthBar.progress = AddEditConstants.MEDIUM_PROGRESS
                     strengthBar.progressDrawable.setColorFilter(
-                        Color.parseColor("#FFA000"),
+                        Color.parseColor(AddEditConstants.COLOUR_MEDIUM),
                         android.graphics.PorterDuff.Mode.SRC_IN
                     )
                 }
 
                 PasswordStrengthChecker.Strength.STRONG ->{
-                    tvStrength.text = "Strong password"
-                    tvStrength.setTextColor(android.graphics.Color.parseColor("#2E7D32"))
+                    tvStrength.text = AddEditConstants.STRONG_PASSWORD
+                    tvStrength.setTextColor(android.graphics.Color.parseColor(AddEditConstants.COLOUR_STRONG))
 
-                    strengthBar.progress = 100
+                    strengthBar.progress = AddEditConstants.STRONG_PROGRESS
                     strengthBar.progressDrawable.setColorFilter(
-                        Color.parseColor("#2E7D32"),
+                        Color.parseColor(AddEditConstants.COLOUR_STRONG),
                         android.graphics.PorterDuff.Mode.SRC_IN
                     )
                 }
@@ -160,14 +161,14 @@ class AddEditActivity : AppCompatActivity() {
     }
     private fun copyToClipboard(label: String, text: String) {
         if (text.isEmpty()) {
-            Toast.makeText(this, "$label field is empty!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, AddEditConstants.EMPTY_FIELD_WITH_LABEL, Toast.LENGTH_SHORT).show()
             return
         }
 
         val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText(label, text)
         clipboard.setPrimaryClip(clip)
-        Toast.makeText(this, "$label copied", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, AddEditConstants.ITEM_COPIED, Toast.LENGTH_SHORT).show()
     }
 
 }

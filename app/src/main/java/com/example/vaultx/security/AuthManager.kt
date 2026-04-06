@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import com.example.vaultx.Util.AppConstants.AuthConstants
 
 class AuthManager(private val activity: AppCompatActivity) {
 
@@ -36,8 +37,8 @@ class AuthManager(private val activity: AppCompatActivity) {
         )
 
         val promptBuilder = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Unlock VaultX")
-            .setSubtitle("Use phone PIN, pattern or fingerprint")
+            .setTitle(AuthConstants.BIOMETRIC_PROMPT_TITLE)
+            .setSubtitle(AuthConstants.BIOMETRIC_PROMPT_SUBTITLE)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             promptBuilder.setAllowedAuthenticators(

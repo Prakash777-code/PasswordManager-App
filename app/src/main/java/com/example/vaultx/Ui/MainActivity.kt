@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
-import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
@@ -44,14 +43,14 @@ class MainActivity : AppCompatActivity() {
             onError = { finish() }
         )
     }
+
     private fun initUI() {
 
         val dao = PasswordDatabse.getInstance(applicationContext).passwordDao()
         val repo = PasswordRepository(dao)
         val factory = PasswordViewModelFactory(repo)
 
-
-        viewModel = ViewModelProvider(this,factory)[PasswordViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory)[PasswordViewModel::class.java]
 
         recyclerView = findViewById(R.id.recyclerView)
         val fabAdd = findViewById<FloatingActionButton>(R.id.fabAdd)
@@ -70,20 +69,14 @@ class MainActivity : AppCompatActivity() {
         )
 
         recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-
         recyclerView.adapter = adapter
 
         viewModel.passwords.observe(this) {
-            updateList()
+            adapter.submitList(it)
             if (scrollTop) {
                 recyclerView.scrollToPosition(0)
                 scrollTop = false
             }
-        }
-
-        viewModel.searchResult.observe(this) {
-            updateList()
-            recyclerView.scrollToPosition(0)
         }
 
         fabAdd.setOnClickListener {
@@ -97,29 +90,12 @@ class MainActivity : AppCompatActivity() {
 
         searchBar.addTextChangedListener { text ->
             val query = text.toString().trim()
-
             if (text?.startsWith(" ") == true) {
-                searchBar.setText(text.trimStart())
+                searchBar.setText(query)
                 searchBar.setSelection(searchBar.text.length)
                 return@addTextChangedListener
             }
-
-            if (query.isEmpty()) {
-                updateList()
-            } else if (query.length >= 2) {
-                viewModel.searchPasswords(query)
-            }
-        }
-
-    }
-    private fun updateList() {
-        val query = searchBar.text.toString().trim()
-
-        if (query.length >= 2) {
-            adapter.submitList(viewModel.searchResult.value?.toList() ?: emptyList())
-        } else {
-           adapter.submitList(viewModel.passwords.value?.toList() ?: emptyList())
+            viewModel.setQuery(query)
         }
     }
-
 }
