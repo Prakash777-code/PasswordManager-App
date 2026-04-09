@@ -168,15 +168,15 @@ class AddEditActivity : AppCompatActivity() {
         }
     }
     private fun copyToClipboard(label: String, text: String) {
-        if (text.isEmpty()) {
-            Toast.makeText(this, AddEditConstants.EMPTY_FIELD_WITH_LABEL, Toast.LENGTH_SHORT).show()
+        if (text.isBlank()) {
+            Toast.makeText(this, String.format(AddEditConstants.EMPTY_FIELD_WITH_LABEL, label), Toast.LENGTH_SHORT).show()
             return
         }
 
         val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText(label, text)
         clipboard.setPrimaryClip(clip)
-        Toast.makeText(this, AddEditConstants.ITEM_COPIED, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, String.format(AddEditConstants.ITEM_COPIED, label), Toast.LENGTH_SHORT).show()
     }
 
 }
