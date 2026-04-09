@@ -28,6 +28,7 @@ class AddEditActivity : AppCompatActivity() {
 
     private lateinit var viewModel: PasswordViewModel
     private val crypto = EncryptionManager()
+    private var changeButtonText = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +56,7 @@ class AddEditActivity : AppCompatActivity() {
             etTitle.setText(it.title)
             etEmail.setText(it.email)
             etPassword.setText(crypto.decrypt(it.password))
+            changeButtonText = true
         }
 
         btnCopyPassword.setOnClickListener {
@@ -66,7 +68,7 @@ class AddEditActivity : AppCompatActivity() {
 
         btnCopyEmail.setOnClickListener {
 
-            var email = etEmail.text.toString()
+            val email = etEmail.text.toString()
             copyToClipboard(AddEditConstants.EMAIL_CLIP_LABEL,email)
         }
 
@@ -157,6 +159,12 @@ class AddEditActivity : AppCompatActivity() {
                     )
                 }
             }
+        }
+
+        if(changeButtonText){
+            btnSavePassword.text = AddEditConstants.UPDATE_PASSWORD_TEXT
+        }else{
+            btnSavePassword.text = AddEditConstants.SAVE_PASSWORD_TEXT
         }
     }
     private fun copyToClipboard(label: String, text: String) {

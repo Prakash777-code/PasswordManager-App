@@ -16,6 +16,8 @@ object AddEditConstants {
     const val PASSWORD_CLIP_LABEL = "Password"
     const val EMAIL_CLIP_LABEL = "Email"
     const val EXTRA_PASSWORD_ITEM = "password_item"
+    const val UPDATE_PASSWORD_TEXT = "Update password"
+    const val SAVE_PASSWORD_TEXT = "Save password"
     const val WEAK_PROGRESS = 30
     const val MEDIUM_PROGRESS = 60
     const val STRONG_PROGRESS = 100

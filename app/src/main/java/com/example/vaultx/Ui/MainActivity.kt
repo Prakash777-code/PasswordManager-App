@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
@@ -65,6 +66,7 @@ class MainActivity : AppCompatActivity() {
             },
             onDelete = { item ->
                 viewModel.delete(item)
+                Toast.makeText(this, "${item.title} deleted!", Toast.LENGTH_SHORT).show()
             }
         )
 

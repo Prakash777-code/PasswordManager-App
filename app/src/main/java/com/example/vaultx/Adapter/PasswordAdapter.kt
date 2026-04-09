@@ -20,6 +20,8 @@ class PasswordAdapter(
     private val onDelete: (PasswordItem) -> Unit
 ) : RecyclerView.Adapter<PasswordAdapter.ViewHolder>() {
 
+    private val dateFormatter = DateFormatter()
+    private val iconManager = IconManager()
     private var list = listOf<PasswordItem>()
     private val crypto = EncryptionManager()
 
@@ -64,7 +66,6 @@ class PasswordAdapter(
         holder.email.text = item.email
         holder.password.text = "••••••••"
 
-        val dateFormatter = DateFormatter()
         holder.date.text = dateFormatter.formatDate(item.updatedAt)
 
         holder.itemView.setOnClickListener {
@@ -99,8 +100,6 @@ class PasswordAdapter(
 
             true
         }
-
-        val iconManager = IconManager()
 
         holder.icon.setImageResource(
             iconManager.setIcon(item.title)

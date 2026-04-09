@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.vaultx.Models.PasswordItem
+import com.example.vaultx.Util.AppConstants.DbConstants
 
 @Database(entities = [PasswordItem::class], version = 1)
 abstract class PasswordDatabse : RoomDatabase(){
@@ -21,7 +22,7 @@ abstract class PasswordDatabse : RoomDatabase(){
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     PasswordDatabse::class.java,
-                    "password_db"
+                    DbConstants.DATABASE_NAME
                 ).build()
                 INSTANCE = instance
                 instance
