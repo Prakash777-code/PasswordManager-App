@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.vaultx.security.EncryptionManager
 import com.google.android.material.button.MaterialButton
 import com.example.vaultx.Models.PasswordItem
 import com.example.vaultx.R
@@ -23,7 +22,6 @@ class PasswordAdapter(
     private val dateFormatter = DateFormatter()
     private val iconManager = IconManager()
     private var list = listOf<PasswordItem>()
-    private val crypto = EncryptionManager()
 
     fun submitList(data: List<PasswordItem>) {
 

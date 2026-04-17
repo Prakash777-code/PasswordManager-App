@@ -15,6 +15,7 @@ import com.example.vaultx.Adapter.PasswordAdapter
 import com.example.vaultx.Local.PasswordDatabse
 import com.example.vaultx.R
 import com.example.vaultx.Repository.PasswordRepository
+import com.example.vaultx.Util.AppConstants.MainActivityConstants
 import com.example.vaultx.ViewModel.PasswordViewModel
 import com.example.vaultx.ViewModel.PasswordViewModelFactory
 import com.example.vaultx.security.AuthManager
@@ -66,7 +67,7 @@ class MainActivity : AppCompatActivity() {
             },
             onDelete = { item ->
                 viewModel.delete(item)
-                Toast.makeText(this, "${item.title} deleted!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "${item.title} ${MainActivityConstants.PASSWORD_DELETED}", Toast.LENGTH_SHORT).show()
             }
         )
 

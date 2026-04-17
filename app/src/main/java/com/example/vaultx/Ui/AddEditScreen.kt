@@ -52,6 +52,7 @@ class AddEditActivity : AppCompatActivity() {
 
 
         val selected: PasswordItem? = intent.getParcelableExtra(AddEditConstants.EXTRA_PASSWORD_ITEM)
+
         selected?.let {
             etTitle.setText(it.title)
             etEmail.setText(it.email)

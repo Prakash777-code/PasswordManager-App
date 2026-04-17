@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.Flow
 class PasswordRepository(private val dao: PasswordDao) {
 
     val passwords: LiveData<List<PasswordItem>> = dao.getPasswords()
-
     suspend fun insert(item: PasswordItem) {
         dao.insert(
             item.copy(
