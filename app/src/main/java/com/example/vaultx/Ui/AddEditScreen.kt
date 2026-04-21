@@ -28,6 +28,8 @@ class AddEditActivity : AppCompatActivity() {
 
     private lateinit var viewModel: PasswordViewModel
     private val crypto = EncryptionManager()
+
+    private val checker = PasswordStrengthChecker()
     private var changeButtonText = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -119,7 +121,6 @@ class AddEditActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        val checker = PasswordStrengthChecker()
         etPassword.addTextChangedListener{
 
             val password = it.toString()
